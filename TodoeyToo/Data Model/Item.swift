@@ -8,7 +8,8 @@
 
 import Foundation
 
-class Item {
+//to write this data to a file path, it must conform to Encodable & Decodable protocols (that is, they are Codable and contain only standard data types)
+class Item: Codable {
     
     var title: String = ""
     var done: Bool = false
