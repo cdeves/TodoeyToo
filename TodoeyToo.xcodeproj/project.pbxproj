@@ -13,6 +13,7 @@
 		AB2B9BB8212DC59900266909 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB2B9BB7212DC59900266909 /* Assets.xcassets */; };
 		AB2B9BBB212DC59900266909 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB2B9BB9212DC59900266909 /* LaunchScreen.storyboard */; };
 		AB2B9BC3212DF9AA00266909 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2B9BC2212DF9AA00266909 /* Item.swift */; };
+		ABC754EF212E14B300825F00 /* ToDoItemsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC754EE212E14B300825F00 /* ToDoItemsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		AB2B9BBA212DC59900266909 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB2B9BBC212DC59900266909 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB2B9BC2212DF9AA00266909 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		ABC754EE212E14B300825F00 /* ToDoItemsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				AB2B9BB2212DC59900266909 /* TodoListViewController.swift */,
+				ABC754EE212E14B300825F00 /* ToDoItemsTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABC754EF212E14B300825F00 /* ToDoItemsTableViewController.swift in Sources */,
 				AB2B9BB3212DC59900266909 /* TodoListViewController.swift in Sources */,
 				AB2B9BC3212DF9AA00266909 /* Item.swift in Sources */,
 				AB2B9BB1212DC59900266909 /* AppDelegate.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ToDoItemsTableViewController.swift
 //  TodoeyToo
 //
 //  Created by Caitlin Sedwick on 8/22/18.
@@ -8,43 +8,50 @@
 
 import UIKit
 
-class TodoListViewController: UITableViewController {
+class ToDoItemsTableViewController: UITableViewController {
 
-    var categoryArray = [String]()
-    var categoryTitle: String?
-    
-    //create a path at which data will be saved
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Categories.plist")
+    var itemArray = [Item]()
+    var currentCategoryTitle = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
+        navigationItem.title = currentCategoryTitle
+        //create a path at which data will be saved
+        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("\(currentCategoryTitle)Items.plist")
+        
         print(dataFilePath)
         
         loadItems()
-
+        
     }
     
     
     //MARK: - TableView Data Source Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryArray.count
+        return itemArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         
-        let item = categoryArray[indexPath.row]
-        cell.textLabel?.text = item
+        let item = itemArray[indexPath.row]
+        cell.textLabel?.text = item.title
+        
+        //Ternary operator: value = condition ? valueIfTrue : valueIfFalse
+        //cell.accessoryType when item.done is true, is .checkmark; cell.accessoryType when item.done is false, is .none
+        cell.accessoryType = item.done ? .checkmark : .none
         
         return cell
         
     }
-
     
-    //MARK: - TableView Delegate Methods
+    
+    //MARK: TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //if a row is clicked, reverse the "done" property
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
         //update the change to "done" property in the saved data array at the documents path
         saveItems()
@@ -52,38 +59,31 @@ class TodoListViewController: UITableViewController {
         //selected row flashes grey instead of remaining grey
         tableView.deselectRow(at: indexPath, animated: true)
         
-        //record the currently selected category title
-        categoryTitle = categoryArray[indexPath.row]
-        
-        //segue to appropriate ToDoItems view controller
-        performSegue(withIdentifier: "toItemView", sender: self)
-    }
-
-    //MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toItemView" {
-            let newViewController = segue.destination as! ToDoItemsTableViewController
-            newViewController.currentCategoryTitle = categoryTitle!
-        }
     }
     
+    
     //MARK: - Add new items
-    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+
+    @IBAction func newItemButtonPressed(_ sender: UIBarButtonItem) {
+   
         //create an alert to allow user to add new data to the todo list
         var textField = UITextField()
-        let alert = UIAlertController(title: "Add New ToDo Category", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add Category Title", style: .default) { (action) in
+        let alert = UIAlertController(title: "Add New ToDo Item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             
             //what will happen once user clicks add item button on our UIAlert
             
-            self.categoryArray.append(textField.text!)
+            let newItem = Item()
+            newItem.title = textField.text!
+            
+            self.itemArray.append(newItem)
             
             self.saveItems()
-    
+            
         }
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Enter a new ToDo Category"
+            alertTextField.placeholder = "Enter a new ToDo Item"
             //save what's entered in the text field to a variable accessible to everything in the addButtonPressed method
             textField = alertTextField
             
@@ -100,10 +100,10 @@ class TodoListViewController: UITableViewController {
         
         do {
             //encode the item array
-            let data = try encoder.encode(categoryArray)
+            let data = try encoder.encode(itemArray)
             
             //write the array to the filepath
-            try data.write(to: dataFilePath!)
+            try data.write(to: (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("\(currentCategoryTitle)Items.plist"))!)
             
         } catch {
             print("error encoding the data \(error)")
@@ -112,19 +112,17 @@ class TodoListViewController: UITableViewController {
         //update tableView with "done" property
         tableView.reloadData()
     }
-
+    
     
     func loadItems() {
-        if let data = try? Data(contentsOf: dataFilePath!) {
+        if let data = try? Data(contentsOf: (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("\(currentCategoryTitle)Items.plist"))!) {
             let decoder = PropertyListDecoder()
             do {
-                categoryArray = try decoder.decode([String].self, from: data)
+                itemArray = try decoder.decode([Item].self, from: data)
             } catch {
                 print("Error decoding item array, \(error)")
             }
         }
     }
-    
-
 }
 
