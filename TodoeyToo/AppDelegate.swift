@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: - Core Data stack
-    //NSPersistentContainer is a SQLite database.  Default containers are always of this type (but coudl instead be XML, etc).
+    //NSPersistentContainer is a SQLite database.  Default containers are always of this type (but could instead be XML, etc).
     lazy var persistentContainer: NSPersistentContainer = {
         //the container created in this step must match the name of your Data Model file
         let container = NSPersistentContainer(name: "DataModel")
